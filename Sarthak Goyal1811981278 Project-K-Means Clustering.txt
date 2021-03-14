@@ -1,0 +1,23 @@
+import pandas as pd
+df= pd.read_excel("cust_data.xlsx")
+df
+
+df.isna().sum()
+
+df['Gender'] = df['Gender'].fillna(0)
+df
+
+
+df['Gender'] = df['Gender'].replace(['M','F'],[1,2])
+df
+
+from sklearn.cluster import KMeans
+km = KMeans(n_clusters = 3, random_state=90)
+km.fit(df.drop('Gender', axis=1))
+
+km.cluster_centers_
+
+df['Cluster'] = df['Gender']
+from sklearn.metrics import classification_report, confusion_matrix
+print(confusion_matrix(df['Cluster'],km.labels_))
+print(classification_report(df['Cluster'],km.labels_))
